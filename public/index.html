@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Practice App</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px var(--accent-glow);
+        }
+
+        .btn:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--accent-glow);
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #a5b4fc;
+            text-align: left;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-badge">● Server Online</div>
+        <h1>Docker Practice App</h1>
+        <p>A simple lightweight Node.js Express web application ready for your containerization experiments.</p>
+        <button class="btn" onclick="fetchInfo()">Check Server Info</button>
+        <div class="info-box" id="info">Click the button to view server details...</div>
+    </div>
+
+    <script>
+        async function fetchInfo() {
+            try {
+                const res = await fetch('/api/info');
+                const data = await res.json();
+                document.getElementById('info').innerHTML = `
+                    <strong>Timestamp:</strong> ${data.timestamp}<br>
+                    <strong>Node Version:</strong> ${data.nodeVersion}<br>
+                    <strong>Platform:</strong> ${data.platform}<br>
+                    <strong>Uptime:</strong> ${Math.floor(data.uptime)} seconds
+                `;
+            } catch (err) {
+                document.getElementById('info').innerText = 'Error fetching server info';
+            }
+        }
+    </script>
+</body>
+</html>
