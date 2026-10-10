@@ -114,7 +114,9 @@
     <script>
         async function fetchInfo() {
             try {
-                const res = await fetch('/api/info');
+                // Connects to the backend service running on port 5000
+                const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000/api/info' : '/api/info';
+                const res = await fetch(backendUrl);
                 const data = await res.json();
                 document.getElementById('info').innerHTML = `
                     <strong>Timestamp:</strong> ${data.timestamp}<br>
